@@ -41,6 +41,9 @@ class Mep {
       {
         get: (_, key) =>
           key === Symbol.iterator? this.#Map[Symbol.iterator].bind(this.#Map):
+          key === Symbol.toPrimitive? hint =>
+            hint === 'number'? this.#Map.size:
+            JSON.stringify(this.#bridge):
           key === mepMap? this.#bridge:
           key === mepExtract? (revoke(), this.#Map):
           key === mepDebug? this.#Map:
