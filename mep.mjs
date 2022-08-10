@@ -5,12 +5,15 @@ const mepDebug = Symbol();
 class Mep {
   #Map = new Map;
   #bridge = Object.freeze(
-    Object.defineProperty(
+    Object.defineProperties(
       Object.assign(
         Object.create(Map.prototype),
         {
           toJSON: () =>
-            Object.fromEntries(this.#Map)
+            Object.fromEntries(this.#Map),
+          [Symbol.toPrimitive]: hint =>
+            hint === 'number'? this.#Map.size:
+            JSON.stringify(this.#bridge)
         },
         Object.fromEntries([
           ...[
@@ -26,9 +29,12 @@ class Mep {
             [method, this.#Map[method].bind(this.#Map)]
           )
         ])
-      ), 'size', {
-        get: () =>
-          this.#Map.size
+      ),
+      {
+        size: {
+          get: () =>
+            this.#Map.size
+        }
       }
     )
   );
@@ -39,6 +45,7 @@ class Mep {
       this,
       {
         get: (_, key) =>
+          key === Symbol.toStringTag? 'Mep':
           key === Symbol.iterator? this.#Map[Symbol.iterator].bind(this.#Map):
           key === Symbol.toPrimitive? hint =>
             hint === 'number'? this.#Map.size:
