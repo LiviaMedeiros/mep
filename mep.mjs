@@ -7,7 +7,7 @@ class Mep {
   #bridge = Object.freeze(
     Object.defineProperty(
       Object.assign(
-        Object.create(null),
+        Object.create(Map.prototype),
         {
           get: key =>
             this.#Map.get(`${key}`),
@@ -66,6 +66,11 @@ class Mep {
       }
     );
     return proxy;
+  }
+  static Map(mep) {
+    if (mep instanceof Mep)
+      return mep[mepMap];
+    throw new TypeError('mep is not an instance of Mep');
   }
 };
 
