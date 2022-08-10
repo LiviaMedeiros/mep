@@ -9,24 +9,23 @@ class Mep {
       Object.assign(
         Object.create(Map.prototype),
         {
-          get: key =>
-            this.#Map.get(`${key}`),
-          set: (key, value) =>
-            this.#Map.set(`${key}`, value),
-          has: key =>
-            this.#Map.has(`${key}`),
-          delete: key =>
-            this.#Map.delete(`${key}`),
           toJSON: () =>
-            Object.fromEntries(this.#Map),
+            Object.fromEntries(this.#Map)
         },
         Object.fromEntries([
+          ...[
+            'get', 'set', 'has', 'delete'
+          ].map(method =>
+            [method, (key, ...$) =>
+              this.#Map[method](`${key}`, ...$)]
+          ),
+          ...[
             'entries', 'forEach', 'values',
             'keys', 'clear', Symbol.iterator
-          ].map(name =>
-            [name, this.#Map[name].bind(this.#Map)]
+          ].map(method =>
+            [method, this.#Map[method].bind(this.#Map)]
           )
-        )
+        ])
       ), 'size', {
         get: () =>
           this.#Map.size
