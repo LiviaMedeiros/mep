@@ -43,22 +43,22 @@ class Mep {
           key === mepMap? this.#bridge:
           key === mepExtract? (revoke(), this.#Map):
           key === mepDebug? this.#Map:
-          this.#Map.get(key),
+          this.#Map.get(`${key}`),
         set: (_, key, value) =>
           this.#Map.set(`${key}`, value),
         has: (_, key) =>
-          this.#Map.has(key),
+          this.#Map.has(`${key}`),
         deleteProperty: (_, key) =>
-          this.#Map.delete(key),
+          this.#Map.delete(`${key}`),
         ownKeys: () =>
           [...this.#Map.keys()],
         getOwnPropertyDescriptor: (_, key) =>
-          this.#Map.has(key)? {
+          this.#Map.has(`${key}`)? {
             writable: true,
             enumerable: true,
             configurable: true
           }:
-          undefined
+          undefined,
       }
     );
     return proxy;
