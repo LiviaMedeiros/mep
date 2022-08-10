@@ -17,6 +17,8 @@ class Mep {
             this.#Map.has(`${key}`),
           delete: key =>
             this.#Map.delete(`${key}`),
+          toJSON: () =>
+            Object.fromEntries(this.#Map),
         },
         Object.fromEntries([
             'entries', 'forEach', 'values',
