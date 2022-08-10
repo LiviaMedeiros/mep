@@ -40,6 +40,7 @@ class Mep {
       this,
       {
         get: (_, key) =>
+          key === Symbol.iterator? this.#Map[Symbol.iterator].bind(this.#Map):
           key === mepMap? this.#bridge:
           key === mepExtract? (revoke(), this.#Map):
           key === mepDebug? this.#Map:
