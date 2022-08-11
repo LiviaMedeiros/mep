@@ -76,12 +76,12 @@ class Mep {
   static Map(mep) {
     if (mep instanceof Mep)
       return mep[mepMap];
-    throw new TypeError('mep is not an instance of Mep');
+    throw new TypeError('mep is not an instance of Mep', { cause: { mep } });
   }
   static extract(mep) {
     if (mep instanceof Mep)
       return mep[mepExtract];
-    throw new TypeError('mep is not an instance of Mep');
+    throw new TypeError('mep is not an instance of Mep', { cause: { mep } });
   }
 };
 
